@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  PACKAGE_PATH: .Test_Functions/Test_Functions.csproj
+  PACKAGE_PATH: ./Test_Functions
 
 jobs:
   deploy:
@@ -15,16 +15,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+
+      - name: List Directory Contents
+        run: |
+          ls -R
 
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Verify Project File
+        run: |
+          if not exist "Test_Functions\Test_Functions.csproj" (
+            echo "Project file not found!"
+            exit 1
+          )
+
       - name: Build
-        run: msbuild.exe Test_Functions/Test_Functions.csproj /p:platform="Any CPU" /p:configuration="Release" /p:VisualStudioVersion="17.0" /p:OutDir="./output"
+        run: |
+          msbuild.exe Test_Functions/Test_Functions.csproj /p:platform="Any CPU" /p:configuration="Release" /p:VisualStudioVersion="17.0" /p:OutDir="./output"
 
       - name: Deploy
         uses: azure/webapps-deploy@v2
