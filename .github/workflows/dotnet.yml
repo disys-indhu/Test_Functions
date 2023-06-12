@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+env:
+  PACKAGE_PATH: ./Test_Functions
 
 jobs:
   deploy:
@@ -17,11 +19,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Set Package Path
-        env:
-          PACKAGE_PATH: ./Test_Functions
-          
       - name: Build
         run: |
           msbuild.exe Test_Functions/Test_Functions.csproj /p:platform="Any CPU" /p:configuration="Release" /p:VisualStudioVersion="17.0" /p:OutDir="./output"    
