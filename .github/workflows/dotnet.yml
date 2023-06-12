@@ -29,6 +29,6 @@ jobs:
       - name: Deploy
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'DeployFunctionApp01'
+          app-name: 'FunctioAppDeploymentTry'
           slot-name: 'production'
           package: ${{ env.PACKAGE_PATH }}/output
