@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+
 env:
   PACKAGE_PATH: ./Test_Functions
 
@@ -15,13 +16,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Build
-        run: |
-          msbuild.exe Test_Functions/Test_Functions.csproj /p:platform="Any CPU" /p:configuration="Release" /p:VisualStudioVersion="17.0" /p:OutDir="./output"    
+        run: msbuild.exe Test_Functions/Test_Functions.csproj /p:platform="Any CPU" /p:configuration="Release" /p:VisualStudioVersion="17.0" /p:OutDir="./output"
 
       - name: Deploy
         uses: azure/webapps-deploy@v2
