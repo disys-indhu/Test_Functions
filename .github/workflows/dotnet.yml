@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  PACKAGE_PATH: ./Test_Functions
+  PACKAGE_PATH: .Test_Functions/Test_Functions.csproj
 
 jobs:
   deploy:
